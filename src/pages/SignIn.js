@@ -5,12 +5,15 @@ import {AuthContext} from "../context/AuthContext";
 
 function SignIn() {
     const history = useHistory()
-const {toggleAuth, isAuth} = useContext(AuthContext)
+const {toggleAuth, saveUser} = useContext(AuthContext)
+    const [userName, setUserName] =  useState('')
 
 
 function handleLogin(e){
         e.preventDefault()
+        saveUser(userName)
         toggleAuth()
+        console.log(userName)
         history.push('/')
 }
 
@@ -24,6 +27,8 @@ function handleLogin(e){
           <input type="text"
                  placeholder="voorbeeld@website.nl"
                  id="emailadres"
+                 value={userName}
+                 onChange={(e) => setUserName(e.target.value)}
           />
           <label htmlFor="wachtwoord" id="wachtwoord">Wachtwoord</label>
           <input type="password" id="wachtwoord"/>

@@ -24,7 +24,7 @@ function NavBar() {
         </Link>
 
       <div>
-          {isAuth ?
+          {isAuth.isAuth ?
             <button
                 type="button"
                 onClick={handleLogout}>
