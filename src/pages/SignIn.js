@@ -1,21 +1,31 @@
 import React, {useContext, useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {AuthContext} from "../context/AuthContext";
+import axios from 'axios'
 
 
 function SignIn() {
     const history = useHistory()
-const {toggleAuth, saveUser} = useContext(AuthContext)
-    const [userName, setUserName] =  useState('')
+    const [account, setAccount] = useState({
+        mailadres: null,
+        password: null
+    })
+    console.log(account)
+const {login} = useContext(AuthContext)
 
-
-function handleLogin(e){
-        e.preventDefault()
-        saveUser(userName)
-        toggleAuth()
-        console.log(userName)
-        history.push('/')
-}
+    async function handleLogin(e){
+        e.preventDefault();
+        try{
+            const response = await axios.post('http://localhost:3000/login', {
+                mailadres: account.mailadres,
+                    password: account.password,
+                })
+            console.log(response)
+        }
+        catch(e){
+            console.error(e)
+        }
+    }
 
     return (
     <>
@@ -27,11 +37,15 @@ function handleLogin(e){
           <input type="text"
                  placeholder="voorbeeld@website.nl"
                  id="emailadres"
-                 value={userName}
-                 onChange={(e) => setUserName(e.target.value)}
+                 value={account.mailadres}
+                 onChange={(e) => setAccount({...account, mailadres: e.target.value})}
           />
           <label htmlFor="wachtwoord" id="wachtwoord">Wachtwoord</label>
-          <input type="password" id="wachtwoord"/>
+          <input type="password"
+                 id="wachtwoord"
+                 value={account.password}
+                 onChange={(e) => setAccount({...account, password: e.target.value})}
+          />
         <button>Inloggen</button>
       </form>
 
